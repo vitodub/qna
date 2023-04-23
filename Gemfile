@@ -32,6 +32,7 @@ gem "net-http"
 gem "net-smtp"
 gem "net-imap"
 gem "uri"
+gem 'devise'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -58,7 +59,8 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
   gem 'shoulda-matchers'
-  gem 'rails-controller-testing' 
+  gem 'rails-controller-testing'
+  gem 'launchy' 
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
