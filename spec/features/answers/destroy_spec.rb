@@ -9,18 +9,18 @@ feature 'User can destroy the answer', %q{
   given(:user) { create(:user) }
   given(:other_user) { create(:user) }
   given(:question) { create(:question, user: user) }
+  given(:question) { create(:question, user: user) }
 
-  #Опять почему-то работает только given!, а не given
   given!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'Authenticated user' do
 
-    scenario 'tries to destroy his answer' do
+    scenario 'tries to destroy his answer', js: true do
       sign_in(user)
       visit question_path(question)
       click_on 'Delete answer'
 
-      expect(page).to have_content 'Your answer successfully deleted.'
+      expect(page).to have_no_content answer.body
     end
 
     scenario 'tries to destroy answer of another user' do

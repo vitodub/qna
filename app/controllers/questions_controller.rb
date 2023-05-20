@@ -1,13 +1,13 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: %i[ show destroy ]
+  before_action :load_question, only: [:show, :edit, :update, :destroy]
 
   def index
     @questions = Question.all
   end
 
   def show
-    
+    @answers = @question.answers.sort_by_best
   end
 
   def new
@@ -15,7 +15,6 @@ class QuestionsController < ApplicationController
   end
 
   def edit
-    
   end
 
   def create
@@ -29,25 +28,26 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(question_params)
-      redirect_to question
-    else
-      render :edit
-    end
+      @question.update(question_params) if current_user.is_author_of?(@question)
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path, notice: 'Your question successfully deleted.'
+    if current_user.is_author_of?(@question)
+      @question.destroy
+
+      redirect_to questions_path, notice: 'Your question was successfully deleted.'
+    else
+      redirect_to questions_path
+    end
   end
 
   private
 
-  def question_params
-    params.require(:question).permit(:title, :body)
+  def load_question
+    @question = Question.find(params[:id])
   end
 
-  def find_question
-    @question = Question.find(params[:id])
+  def question_params
+    params.require(:question).permit(:title, :body)
   end
 end

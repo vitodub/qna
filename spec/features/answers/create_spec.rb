@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-feature 'User can answer the question', %q{
-  In order to answer the question
+feature 'User can give an answer', %q{
+  In order to share my knowledge
   As an authenticated user
-  I'd like to be able to create an answer
+  I want to be able to create answers
 } do
 
-  given(:question) { create(:question) }
+  given!(:question) { create(:question) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     given(:user) { create(:user) }
 
     background do
@@ -16,22 +16,25 @@ feature 'User can answer the question', %q{
       visit question_path(question)
     end
 
-    scenario 'tries to answer the question' do
-      fill_in 'Body', with: 'My answer'
+    scenario 'tries to create an answer', js: true do
+
+      fill_in 'Your answer', with: 'My answer'
       click_on 'Answer the question'
 
-      expect(page).to have_content 'Your answer successfully created.'
-      expect(page).to have_content 'My answer'
+      within '.answers' do # чтобы убедиться, что ответ в списке, а не в форме
+        expect(page).to have_content 'My answer'
+      end
     end
 
-    scenario 'tries to answer the question with errors' do
+    scenario 'tries to create answer with errors', js: true do
+
       click_on 'Answer the question'
 
       expect(page).to have_content "Body can't be blank"
     end
   end
 
-  scenario 'Unauthenticated user tries to answer the question' do 
+  scenario 'Unauthenticated user tries to write an answer' , js: true do
     visit question_path(question)
     click_on 'Answer the question'
 

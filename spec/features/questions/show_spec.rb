@@ -7,7 +7,6 @@ feature 'User can view question with all answers', %q{
 } do
     given(:question) { create(:question) }
 
-    #Подскажи, пожалуйста, почему given не создает ответы, а создает только given!
     given!(:answers) { create_list(:answer, 3, question: question) }
 
     scenario 'User can view all answers' do
