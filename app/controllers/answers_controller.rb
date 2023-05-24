@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: %i[ create destroy ]
+  before_action :authenticate_user!, except: %i[ index show ]
   before_action :find_question, only: %i[ new create ]
-  before_action :find_answer, only: %i[ destroy ]  
+  before_action :find_answer, only: %i[ edit update destroy mark_best ]  
 
   def new
     @answer = @question.answers.new
@@ -14,17 +14,26 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-    
-    if @answer.save
-      redirect_to @question, notice: 'Your answer successfully created.'
-    else
-      render 'questions/show'
-    end
+    @answer.save
+  end
+
+  def update
+    @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def destroy
-    @answer.destroy
-    redirect_to question_path(@answer.question), notice: 'Your answer successfully deleted.'
+    if current_user.is_author_of?(@answer)
+      @answer.destroy
+    else
+      redirect_to question_path(@answer.question)
+    end
+    @question = @answer.question
+  end
+
+  def mark_best
+    @answer.mark_as_best
+    @question = @answer.question
   end
 
   private

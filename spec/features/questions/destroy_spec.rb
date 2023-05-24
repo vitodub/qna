@@ -15,12 +15,12 @@ feature 'User can destroy the question', %q{
 
   describe 'Authenticated user' do
 
-    scenario 'tries to destroy his question' do
+    scenario 'tries to destroy his question', js: true do
       sign_in(user)
       visit question_path(question)
       click_on 'Delete question'
 
-      expect(page).to have_content 'Your question successfully deleted.'
+      expect(page).not_to have_content question.body
     end
 
     scenario 'tries to destroy question of another user' do
