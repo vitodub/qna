@@ -12,6 +12,11 @@
 
 .answer_new      
   = form_with model: [@question, @question.answers.new], class: 'new-answer', local: false do |f|
-    = f.label :body, 'Your answer'
-    = f.text_area :body
+    p
+      = f.label :body, 'Your answer'
+      = f.text_area :body
+    p
+      = f.label :files
+      = f.file_field :files, multiple: true
+
     = f.submit 'Answer the question'

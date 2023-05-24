@@ -11,6 +11,10 @@ div id="answer-#{answer.id}"
 
     p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
+  - if answer.files.attached?
+    - answer.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)
+
   - if current_user&.is_author_of?(answer.question)
     p= link_to 'Mark as best', mark_best_answer_path(answer), class: 'best_answer_link', method: :post, remote: true
 
