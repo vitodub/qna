@@ -10,7 +10,7 @@ feature 'User can destroy the question', %q{
   given(:other_user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  #Опять почему-то работает только given!, а не given
+
   given!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'Authenticated user' do
@@ -28,6 +28,15 @@ feature 'User can destroy the question', %q{
       visit question_path(question)
 
       expect(page).to have_no_content 'Delete question'
+    end
+
+    scenario 'destroys file of question', js: true do
+      sign_in(user)
+      question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb")
+      visit question_path(question)
+
+      click_on 'Delete file'
+      expect(page).to have_no_link 'rails_helper.rb'
     end
   end
 
