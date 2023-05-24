@@ -32,6 +32,10 @@ feature 'User can give an answer', %q{
 
       expect(page).to have_content "Body can't be blank"
     end
+
+    scenario 'asks a question with attached file' do
+      
+    end
   end
 
   scenario 'Unauthenticated user tries to write an answer' , js: true do
