@@ -37,7 +37,7 @@ yandex:
   service: S3
   access_key_id: <%= ENV['ACCESS_KEY_ID'] %>
   secret_access_key: <%= ENV['SECRET_ACCESS_KEY'] %>
-  region: eu-north-1
-  bucket: vitodub
+  region: ru-central1
+  bucket: 'vitodub'
   endpoint: 'https://storage.yandexcloud.net'
   force_path_style: true
