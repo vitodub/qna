@@ -29,6 +29,17 @@ feature 'User can destroy the answer', %q{
 
       expect(page).to have_no_content 'Delete answer'
     end
+
+    scenario 'destroys file of answer', js: true do
+      sign_in(user)
+      answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb")
+      visit question_path(question)
+
+      within '.answers' do
+        click_on 'Delete file'
+        expect(page).to have_no_link 'rails_helper.rb'
+      end
+    end
   end
 
   scenario 'Unauthenticated user tries to destroy an answer' do
