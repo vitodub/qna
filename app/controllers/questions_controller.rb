@@ -8,6 +8,8 @@ class QuestionsController < ApplicationController
 
   def show
     @answers = @question.answers.sort_by_best
+    @answer = @question.answers.new
+    @answer.links.new
   end
 
   def new

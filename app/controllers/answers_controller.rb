@@ -5,6 +5,7 @@ class AnswersController < ApplicationController
 
   def new
     @answer = @question.answers.new
+    @answer.links.new
   end
 
   def show
@@ -39,7 +40,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url])
   end
 
   def find_question
