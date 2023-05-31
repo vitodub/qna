@@ -17,10 +17,11 @@ feature 'User can add links to question', %q{
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
+
+    fill_in 'Link name', with: 'My gist'
   end
 
   scenario 'User adds link when asks question' do
-    fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
     click_on 'Ask'
@@ -29,7 +30,6 @@ feature 'User can add links to question', %q{
   end
 
   scenario 'User adds several links when asks question', js: true do
-    fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
     click_on 'Add link'
@@ -41,5 +41,13 @@ feature 'User can add links to question', %q{
 
     expect(page).to have_link 'My gist', href: gist_url
     expect(page).to have_link 'My second gist', href: gist_second_url 
+  end
+
+  scenario 'User provides bad url for link', js: true do
+    fill_in 'Url', with: "bad_url"
+
+    click_on 'Ask'
+
+    expect(page).to have_content 'Links url is invalid' 
   end
 end

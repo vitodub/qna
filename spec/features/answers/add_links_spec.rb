@@ -16,10 +16,11 @@ feature 'User can add links to answer', %q{
     visit question_path(question)
    
     fill_in 'Your answer', with: 'My answer'
+
+    fill_in 'Link name', with: 'My gist'
   end
 
   scenario 'User adds link when gives an answer', js: true do
-    fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
     click_on 'Answer the question'
@@ -30,7 +31,6 @@ feature 'User can add links to answer', %q{
   end
 
   scenario 'User adds several links when gives an answer', js: true do
-    fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
 
     click_on 'Add link'
@@ -44,5 +44,13 @@ feature 'User can add links to answer', %q{
       expect(page).to have_link 'My gist', href: gist_url
       expect(page).to have_link 'My second gist', href: gist_second_url
     end
+  end
+
+  scenario 'User provides bad url for link', js: true do
+    fill_in 'Url', with: "bad_url"
+
+    click_on 'Answer the question'
+
+    expect(page).to have_content 'Links url is invalid' 
   end
 end
