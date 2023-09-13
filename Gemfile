@@ -43,6 +43,7 @@ group :development, :test do
   gem 'rspec-rails', '~>4.1'
   gem 'factory_bot_rails'
   gem 'dotenv-rails'
+  gem 'octokit'
 end
 
 group :development do

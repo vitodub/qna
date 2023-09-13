@@ -14,4 +14,6 @@ Rails.application.routes.draw do
   scope :active_storage, module: :active_storage, as: :active_storage do
     resources :attachments, only: [:destroy]
   end
+
+  resources :links, only: :destroy
 end

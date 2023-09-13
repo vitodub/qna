@@ -8,7 +8,7 @@ feature 'User can add links to answer', %q{
 
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:gist_url) { 'https://gist.github.com/vitodub/fa80580da75c12b95f5a1a84ac9ee373' }
+  given(:gist_url) { 'https://gist.github.com/vitodub/5f67fadb25120be0220378d5e5dbfbeb' }
   given(:gist_second_url) { 'https://gist.github.com/vitodub/fa80580da75c12b95f5a1a84ac9ee374' }
 
   background do
