@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
+  resources :users do
+    member do
+      get :rewards
+    end
+  end
 
   resources :questions do
     resources :answers, shallow: true, except: %i[ show index ] do

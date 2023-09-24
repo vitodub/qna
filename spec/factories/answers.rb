@@ -17,5 +17,14 @@ FactoryBot.define do
         answer.links.new(name: 'gist link', url: 'https://gist.github.com/vitodub/5f67fadb25120be0220378d5e5dbfbeb')
       end
     end
+
+    trait :best do
+      best { true }
+    end
+
+    trait :secoond_best do
+      best { true }
+      body { "SecondBestAnswer" }
+    end
   end
 end

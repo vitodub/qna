@@ -21,11 +21,8 @@
 
   p Rewards:
   p
-    = f.label :reward
-    = f.file_field :reward, direct_upload: true
-  p
-    = f.label :reward_name
-    = f.text_area :reward_name
+    = f.fields_for :reward do |reward|
+      = render 'reward_fields', f: reward
 
   p= f.submit 'Ask'
 

@@ -8,7 +8,8 @@ feature "User can mark one of his question's answer as best", %q{
 
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:question_with_reward) { create(:question, :with_reward, user: user) }
+  given!(:question_with_reward) { create(:question, user: user) }
+  given!(:reward) { create(:reward, rewardable: question_with_reward) }
   given!(:answer) { create(:answer, question: question, user: user) }
   given!(:answer_2) { create(:answer, question: question) }
   given!(:rewarded_answer) { create(:answer, question: question_with_reward, user: user) }
@@ -36,13 +37,14 @@ feature "User can mark one of his question's answer as best", %q{
 
       scenario "question has a reward", js: true do
         rewarded_answer
+        reward
         sign_in(user)
         visit question_path(question_with_reward)
 
         within '.answers' do
           find("#answer-#{rewarded_answer.id} .best_answer_link").click
       
-          expect(page).to have_content 'BestAnswer'
+          expect(page).to have_content 'BasicRewardNameString'
         end
       end
     end

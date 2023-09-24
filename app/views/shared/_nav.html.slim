@@ -1,2 +1,5 @@
-p= link_to 'Sign out', destroy_user_session_path, method: :delete
+- if current_user.present?
+  p= link_to 'Sign out', destroy_user_session_path, method: :delete
+
+  p= link_to 'My Rewards', rewards_user_path(current_user)
 
