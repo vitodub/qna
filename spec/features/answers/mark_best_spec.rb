@@ -8,8 +8,11 @@ feature "User can mark one of his question's answer as best", %q{
 
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
+  given!(:question_with_reward) { create(:question, user: user) }
+  given!(:reward) { create(:reward, rewardable: question_with_reward) }
   given!(:answer) { create(:answer, question: question, user: user) }
   given!(:answer_2) { create(:answer, question: question) }
+  given!(:rewarded_answer) { create(:answer, question: question_with_reward, user: user) }
 
   scenario 'Unauthenticated can not edit answer' do
     visit question_path(question)
@@ -19,20 +22,37 @@ feature "User can mark one of his question's answer as best", %q{
 
   describe 'Authenticated user' do
 
-    background do
-      sign_in(user)
-      visit question_path(question)
-    end
+    describe 'marks best answer', js: true do
+      scenario "question doesn't have a reward", js: true do
+        answer
+        sign_in(user)
+        visit question_path(question)
 
-    scenario 'marks best answer', js: true do
-      within '.answers' do
-        find("#answer-#{answer.id} .best_answer_link").click
+        within '.answers' do
+          find("#answer-#{answer.id} .best_answer_link").click
       
-        expect(page).to have_content 'Best answer'
+          expect(page).to have_content 'Best answer'
+        end
+      end
+
+      scenario "question has a reward", js: true do
+        rewarded_answer
+        reward
+        sign_in(user)
+        visit question_path(question_with_reward)
+
+        within '.answers' do
+          find("#answer-#{rewarded_answer.id} .best_answer_link").click
+      
+          expect(page).to have_content 'BasicRewardNameString'
+        end
       end
     end
 
     scenario 'marks another best answer', js: true do
+      sign_in(user)
+      visit question_path(question)
+      
       within '.answers' do
         find("#answer-#{answer.id} .best_answer_link").click
         find("#answer-#{answer_2.id} .best_answer_link").click
@@ -42,5 +62,6 @@ feature "User can mark one of his question's answer as best", %q{
         end
       end
     end
+
   end
 end

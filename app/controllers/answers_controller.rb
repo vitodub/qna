@@ -5,6 +5,7 @@ class AnswersController < ApplicationController
 
   def new
     @answer = @question.answers.new
+    @answer.links.new
   end
 
   def show
@@ -33,13 +34,14 @@ class AnswersController < ApplicationController
 
   def mark_best
     @answer.mark_as_best
+    assign_reward(@answer) if @answer.question.reward.present?
     @question = @answer.question
   end
 
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url])
   end
 
   def find_question
@@ -48,5 +50,14 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def assign_reward(answer)
+    reward = answer.question.reward
+    if reward.reward_achievement.present?
+      reward.reward_achievement.update(user: answer.user)
+    else
+      reward.reward_achievement = RewardAchievement.create(user: answer.user, reward: reward)
+    end
   end
 end

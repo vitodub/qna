@@ -35,6 +35,7 @@ gem "uri"
 gem 'devise'
 gem 'jquery-rails'
 gem 'aws-sdk-s3', require: false
+gem 'cocoon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -42,6 +43,7 @@ group :development, :test do
   gem 'rspec-rails', '~>4.1'
   gem 'factory_bot_rails'
   gem 'dotenv-rails'
+  gem 'octokit'
 end
 
 group :development do

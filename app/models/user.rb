@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   has_many :questions
   has_many :answers
+  has_many :reward_achievements, dependent: :destroy
 
   def is_author_of?(obj)
     self.id == obj.user_id

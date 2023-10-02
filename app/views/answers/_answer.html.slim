@@ -1,9 +1,37 @@
 div id="answer-#{answer.id}"
   - if answer.best
     .best_answer
-      h1= "Best answer: #{answer.body}"
+      - if answer.question.reward.present?
+        p Rewarded:
+        p
+          = answer.question.reward.name
+        img[src="#{url_for(answer.question.reward.file)}"]
+
+      - else
+        h1= "Best answer: #{answer.body}"
+        
+      .links
+        p Links:
+        ul
+          -answer.links.each do |link|
+            li= link_to link.name, link.url
   - else
     p= answer.body
+
+    .links
+      p Links:
+      ul
+        -answer.links.each do |link|
+          - if link.gist?
+            li[id="gist-#{link.id}"]
+              = link_to link.name, link.url, class: "gist", data: { gist_id: link.gist_id, link_id: link.id }
+          - else
+            li 
+            = link_to link.name, link.url
+          - if current_user&.is_author_of?(answer)
+              = link_to 'Delete', link_path(link), method: :delete, remote: true
+
+
   - if current_user&.is_author_of?(answer)
     p= link_to 'Delete answer', answer_path(answer),
                             method: :delete,
@@ -29,5 +57,17 @@ div id="answer-#{answer.id}"
   p
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
+
+  p Links:
+  p
+    = f.fields_for :links do |link|
+      p
+        = link.label :name, 'Link name'
+        = link.text_field :name
+      p
+        = link.label :url
+        = link.text_field :url  
+
+      = link_to_add_association 'Add link', f, :links
   
   p= f.submit 'Save'
