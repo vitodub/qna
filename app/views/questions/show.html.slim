@@ -7,35 +7,35 @@
 .question
   = render @question
 
-.links
-  p Links:
-  ul
-    -@question.links.each do |link|    
-      - if link.gist?
-        li[id="gist-#{link.id}"]
-          = link_to link.name, link.url, class: "gist", data: { gist_id: link.gist_id, link_id: link.id }
-      - else
-        li 
-          = link_to link.name, link.url
-      - if current_user&.is_author_of?(@question)
-              = link_to 'Delete link', link_path(link), method: :delete, remote: true
-
-.answers
-  = render @answers
-
-.answer_new      
-  = form_with model: [@question, @answer], class: 'new-answer', local: false do |f|
-    p
-      = f.label :body, 'Your answer'
-      = f.text_area :body
-    p
-      = f.label :files
-      = f.file_field :files, multiple: true, direct_upload: true
-
+  .links
     p Links:
-    p
-      =f.fields_for :links do |link|
-        = render 'link_fields', f: link
-      .links
-        = link_to_add_association 'Add link', f, :links
-    = f.submit 'Answer the question'
+    ul
+      -@question.links.each do |link|    
+        - if link.gist?
+          li[id="gist-#{link.id}"]
+            = link_to link.name, link.url, class: "gist", data: { gist_id: link.gist_id, link_id: link.id }
+        - else
+          li 
+            = link_to link.name, link.url
+        - if current_user&.is_author_of?(@question)
+                = link_to 'Delete link', link_path(link), method: :delete, remote: true
+
+  .answers
+    = render @answers
+
+  .answer_new      
+    = form_with model: [@question, @answer], class: 'new-answer', local: false do |f|
+      p
+        = f.label :body, 'Your answer'
+        = f.text_area :body
+      p
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
+
+      p Links:
+      p
+        =f.fields_for :links do |link|
+          = render 'link_fields', f: link
+        .links
+          = link_to_add_association 'Add link', f, :links
+      = f.submit 'Answer the question'
