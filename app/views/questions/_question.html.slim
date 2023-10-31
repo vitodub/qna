@@ -12,6 +12,8 @@ p= question.body
   p= link_to 'Delete question', question_path(question), method: :delete
   p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
 
+= render 'shared/votes', resource: question
+
 = form_with model: question, local: false, class: 'hidden', html: { id: "edit-question" } do |f|
   p
     = f.label :title, 'Edit title'
