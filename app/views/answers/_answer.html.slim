@@ -49,7 +49,7 @@ div id="answer-#{answer.id}"
   - if current_user&.is_author_of?(answer.question)
     p= link_to 'Mark as best', mark_best_answer_path(answer), class: 'best_answer_link', method: :post, remote: true
 
-  = render 'shared/votes', resource: answer
+  = render 'shared/votes', resource: answer, table: 'answers'
 
 = form_with model: answer, local: false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
   p

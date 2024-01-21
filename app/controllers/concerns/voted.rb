@@ -1,4 +1,4 @@
-module Votable
+module Voted
   extend ActiveSupport::Concern
 
   def like
@@ -14,7 +14,7 @@ module Votable
   private
 
   def set_votable_and_vote
-    @votable = params[:votable_table].classify.constantize.find(params[:id])
+    @votable = params[:table].classify.constantize.find(params[:id])
     @vote = @votable.votes.where(user: current_user).first
   end
 
@@ -31,13 +31,9 @@ module Votable
   def respond(decision)
     respond_to do |format|
       format.json do
-        render json: { id: @votable.id, rating: rating,
+        render json: { controller: 'voted', table: params[:table], id: @votable.id, rating: @votable.rating,
                        liked: @votable.votes.where(user: current_user).present? ? decision : nil }
       end
     end
-  end
-
-  def rating
-    @votable.votes.where(liked: true).count - @votable.votes.where(liked: false).count
   end
 end

@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
 
-  include Votable
+  include Voted
 
   def index
     @questions = Question.all
@@ -12,6 +12,7 @@ class QuestionsController < ApplicationController
     @answers = @question.answers.sort_by_best
     @answer = @question.answers.new
     @answer.links.new
+    gon.question_id = @question.id
   end
 
   def new

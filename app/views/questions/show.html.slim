@@ -5,6 +5,7 @@
   = render 'shared/errors', resource: @question
 
 .question
+  div[id="question-id", data-question-id=@question.id]
   = render @question
 
   .links
