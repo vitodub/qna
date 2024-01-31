@@ -1,3 +1,4 @@
+div[id="questions-#{question.id}"]
 h1= question.title
 p= question.body
 
@@ -38,3 +39,5 @@ p= question.body
       = link_to_add_association 'Add link', f, :links 
 
   p= f.submit 'Save'
+
+= render 'shared/comments', resource: question

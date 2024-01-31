@@ -11,13 +11,15 @@ Rails.application.routes.draw do
       member do
         post 'mark_best'
         post 'like', defaults: { table: 'answers'}
-        post 'dislike', defaults: { table: 'answers'} 
+        post 'dislike', defaults: { table: 'answers'}
+        post 'comment', defaults: { table: 'answers'} 
       end
     end
 
     member do
       post 'like', defaults: { table: 'questions'}
-      post 'dislike', defaults: { table: 'questions'} 
+      post 'dislike', defaults: { table: 'questions'}
+      post 'comment', defaults: { table: 'questions'} 
     end  
   end
 
@@ -28,4 +30,5 @@ Rails.application.routes.draw do
   end
 
   resources :links, only: :destroy
+  resources :comments, only: :destroy
 end

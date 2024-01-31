@@ -1,9 +1,10 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
-  after_action :publish_question, only: %i[ create ]
+  after_action :publish_question, only: [:create]
 
   include Voted
+  include Commented
 
   def index
     @questions = Question.all
@@ -53,6 +54,7 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.with_attached_files.find(params[:id])
+    @comment = Comment.new
   end
 
   def question_params

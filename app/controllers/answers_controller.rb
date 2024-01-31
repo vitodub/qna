@@ -5,6 +5,7 @@ class AnswersController < ApplicationController
   after_action :publish_answer, only: %i[ create ] 
 
   include Voted
+  include Commented
 
   def new
     @answer = @question.answers.new
@@ -19,6 +20,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     @answer.save
+    @comment = Comment.new
   end
 
   def update
@@ -53,6 +55,7 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.find(params[:id])
+    @comment = Comment.new
   end
 
   def assign_reward(answer)
