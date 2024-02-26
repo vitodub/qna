@@ -1,0 +1,31 @@
+<div id="answer-{{answer.id}}">
+  <p>{{answer.body}}</p>
+  {{#each answer.links}}
+    <p>
+      <a href="{{this.url}}">{{this.name}}</a>
+    </p>
+
+    {{#if this.gist?}}
+      <div id="gist-{{this.id}}"></div>
+      <p>
+        <a class="gist" data-gist-id="{{this.gist_id}}" data-link-id="{{this.id}}" href="{{this.url}}">{{this.name}}</a>
+      </p>
+    {{/if}}
+  {{/each}}
+  
+  {{#each answer.files}}
+    <div id="attachment-{{this.id}}">
+      <p>
+        <a href="{{this.url}}">{{this.name}}</a>
+      </p>
+    </div>
+  {{/each}}
+
+  {{#if answer.question_user_eq_current_user}}
+    <p>
+      <a data-remote="true" data-method="post" href="/answers/{{answer.id}}/mark_best">Mark as best</a>
+    </p>
+  {{/if}}
+
+  {{> ../shared/_vote resource=answer}}
+</div>

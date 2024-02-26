@@ -1,0 +1,2 @@
+class Сomment < ApplicationRecord
+end

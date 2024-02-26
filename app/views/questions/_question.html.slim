@@ -1,3 +1,4 @@
+div[id="questions-#{question.id}"]
 h1= question.title
 p= question.body
 
@@ -12,7 +13,7 @@ p= question.body
   p= link_to 'Delete question', question_path(question), method: :delete
   p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
 
-= render 'shared/votes', resource: question
+= render 'shared/votes', resource: question, table: 'questions'
 
 = form_with model: question, local: false, class: 'hidden', html: { id: "edit-question" } do |f|
   p
@@ -38,3 +39,5 @@ p= question.body
       = link_to_add_association 'Add link', f, :links 
 
   p= f.submit 'Save'
+
+= render 'shared/comments', resource: question

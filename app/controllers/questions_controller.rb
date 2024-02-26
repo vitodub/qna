@@ -1,8 +1,10 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
+  after_action :publish_question, only: [:create]
 
-  include Votable
+  include Voted
+  include Commented
 
   def index
     @questions = Question.all
@@ -12,6 +14,7 @@ class QuestionsController < ApplicationController
     @answers = @question.answers.sort_by_best
     @answer = @question.answers.new
     @answer.links.new
+    gon.question_id = @question.id
   end
 
   def new
@@ -51,6 +54,7 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.with_attached_files.find(params[:id])
+    @comment = Comment.new
   end
 
   def question_params
@@ -61,5 +65,14 @@ class QuestionsController < ApplicationController
       links_attributes: [:name, :url],
       reward_attributes: [:name, :file]
       )
+  end
+
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast 'questions_channel',
+                                  ApplicationController.render(
+                                    partial: 'questions/question_header',
+                                    locals: { question: @question }
+                                  )
   end
 end
