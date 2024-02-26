@@ -73,6 +73,9 @@ RSpec.configure do |config|
   config.after(:all) do
     FileUtils.rm_rf("#{Rails.root}/tmp/storage")
   end
+
+  config.include OmniauthHelpers
+  OmniAuth.config.test_mode = true
 end
 
 Shoulda::Matchers.configure do |config|

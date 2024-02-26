@@ -36,6 +36,9 @@ gem 'devise'
 gem 'jquery-rails'
 gem 'aws-sdk-s3', require: false
 gem 'cocoon'
+gem 'omniauth'
+gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-github'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
