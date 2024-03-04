@@ -3,12 +3,14 @@ module Voted
 
   def like
     set_votable_and_vote
-    user_vote(true) unless @votable.user == current_user
+    authorize! :like, @votable
+    user_vote(true)
   end
 
   def dislike
     set_votable_and_vote
-    user_vote(false) unless @votable.user == current_user
+    authorize! :dislike, @votable
+    user_vote(false)
   end
 
   private
