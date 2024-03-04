@@ -26,5 +26,15 @@ FactoryBot.define do
       best { true }
       body { "SecondBestAnswer" }
     end
+
+    trait :with_attached_file do
+      after(:build) do |answer|
+        answer.files.attach(
+          io: File.open("#{Rails.root}/spec/files/file1.txt"),
+          filename: 'file1.txt',
+          content_type: 'text/txt'
+        )
+      end
+    end
   end
 end

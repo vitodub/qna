@@ -28,11 +28,11 @@ div id="answer-#{answer.id}"
           - else
             li 
             = link_to link.name, link.url
-          - if current_user&.is_author_of?(answer)
+          - if can?(:destroy, link)
               = link_to 'Delete', link_path(link), method: :delete, remote: true
 
 
-  - if current_user&.is_author_of?(answer)
+  - if can?(:destroy, answer)
     p= link_to 'Delete answer', answer_path(answer),
                             method: :delete,
                             remote: true                         
@@ -43,10 +43,10 @@ div id="answer-#{answer.id}"
     - answer.files.each do |file|
       div id="attachment_#{file.id}"
         p= link_to file.filename.to_s, url_for(file)
-        - if current_user&.is_author_of?(answer)
+        - if can?(:destroy, file)
           = link_to 'Delete file', active_storage_attachment_path(file), method: :delete, remote: true
 
-  - if current_user&.is_author_of?(answer.question)
+  - if can?(:mark_best, answer)
     p= link_to 'Mark as best', mark_best_answer_path(answer), class: 'best_answer_link', method: :post, remote: true
 
   = render 'shared/votes', resource: answer, table: 'answers'

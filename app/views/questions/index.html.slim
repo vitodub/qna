@@ -4,4 +4,10 @@ div.questions-headers-list
   - @questions.each do |question|
     = render 'question_header', question: question
 
-p= link_to 'Ask question', new_question_path
+- if can?(:create, Question)
+  p= link_to 'Ask question', new_question_path
+- else
+  | In order to ask questions please 
+  = link_to 'sign in', new_user_session_path
+
+

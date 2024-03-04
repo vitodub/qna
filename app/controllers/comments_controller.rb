@@ -1,14 +1,17 @@
 class CommentsController < ApplicationController
+  before_action :find_comment, only: %i[destroy]
+
+  authorize_resource
+
   def destroy
-    @comment = Comment.find(params[:id])
-    if @comment.user == current_user
-      perform_destroy(@comment)
-    else
-      redirect_to questions_path, notice: "You are not allowed to perform this action."
-    end
+    perform_destroy(@comment)
   end
 
   private
+
+  def find_comment
+    @comment = Comment.find(params[:id])
+  end
 
   def perform_destroy(comment)
     comment.destroy

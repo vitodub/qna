@@ -7,6 +7,8 @@ class AnswersController < ApplicationController
   include Voted
   include Commented
 
+  authorize_resource
+
   def new
     @answer = @question.answers.new
     @answer.links.new
@@ -29,11 +31,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.is_author_of?(@answer)
-      @answer.destroy
-    else
-      redirect_to question_path(@answer.question)
-    end
+    @answer.destroy
     @question = @answer.question
   end
 

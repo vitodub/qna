@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
   include Voted
   include Commented
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end
@@ -37,17 +39,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-      @question.update(question_params) if current_user.is_author_of?(@question)
+      @question.update(question_params)
   end
 
   def destroy
-    if current_user.is_author_of?(@question)
-      @question.destroy
-
-      redirect_to questions_path, notice: 'Your question was successfully deleted.'
-    else
-      redirect_to questions_path
-    end
+    @question.destroy
+    redirect_to questions_path
   end
 
   private
