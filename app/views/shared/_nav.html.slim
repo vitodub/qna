@@ -2,4 +2,8 @@
   p= link_to 'Sign out', destroy_user_session_path, method: :delete
 
   p= link_to 'My Rewards', rewards_user_path(current_user)
+- else
+  p= link_to 'Sign up', new_user_registration_path
+
+  p= link_to 'Sign in', new_user_session_path
 
